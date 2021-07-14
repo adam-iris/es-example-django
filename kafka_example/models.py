@@ -7,7 +7,7 @@ def random_value():
     """
     Return some random value for a message
     """
-    return str(uuid.uuid1())
+    return str(uuid.uuid4())
 
 
 class ExampleValue(models.Model):
