@@ -2,13 +2,16 @@
 
 This is a Django system that implements an example "round-trip" app implementing 3 basic steps of our data path:
 
-- **Collection** ![collection](django-collection.png)
+- **Collection**
+  - ![collection](django-collection.png)
   - HTTP and [WebSocket](WebSockets.md) interfaces
   - Data is put into a Kafka queue
-- **Archive** ![archive](django-archive.png)
+- **Archive**
+  - ![archive](django-archive.png)
   - Picks up message from Kafka
   - Saves in a storage layer
-- **Distribution** ![distribution](django-distribution.png)
+- **Distribution**
+  - ![distribution](django-distribution.png)
   - Pulls data from the database
   - HTTP and [WebSocket](WebSockets.md) interfaces
   
