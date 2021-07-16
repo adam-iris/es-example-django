@@ -3,6 +3,6 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /django
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY . ./
+COPY . .
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
