@@ -51,6 +51,7 @@ class kafka_producer(object):
                 SCHEMA_REGISTRY_URL + '/subjects/' + self.topic + '-key/versions/latest'
             )
             r = requests.get(key_schema_url)
+            r.raise_for_status()
             self.key_schema_str = json.dumps(r.json()['schema'])
 
         self.key_avro_serializer = AvroSerializer(
@@ -80,6 +81,7 @@ class kafka_producer(object):
                 SCHEMA_REGISTRY_URL + '/subjects/' + self.topic + '-value/versions/latest'
             )
             r = requests.get(value_schema_url)
+            r.raise_for_status()
             self.value_schema_str = json.dumps(r.json()['schema'])
 
         self.value_avro_serializer = AvroSerializer(
@@ -141,6 +143,7 @@ class kafka_consumer(object):
                 SCHEMA_REGISTRY_URL + '/subjects/' + self.topic + '-key/versions/latest'
             )
             r = requests.get(key_schema_url)
+            r.raise_for_status()
             self.key_schema_str = r.json()['schema']
 
         self.key_avro_deserializer = AvroDeserializer(
@@ -170,6 +173,7 @@ class kafka_consumer(object):
                 SCHEMA_REGISTRY_URL + '/subjects/' + self.topic + '-value/versions/latest'
             )
             r = requests.get(value_schema_url)
+            r.raise_for_status()
             self.value_schema_str = r.json()['schema']
 
         self.value_avro_deserializer = AvroDeserializer(
