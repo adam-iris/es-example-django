@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from kafka_example.kafka.producer import produce_example_message
 from kafka_example.models import ExampleValue
+import json
 import logging
 
 LOGGER = logging.getLogger(__name__)
@@ -33,11 +34,11 @@ class IndexView(FormView):
         """
         try:
             value = form.cleaned_data.get('value')
-            produce_example_message(value)
+            sent = produce_example_message(value)
             messages.add_message(
                 self.request,
                 messages.SUCCESS,
-                "Added to queue: '%s'" % value,
+                "Added to queue: %s" % json.dumps(sent),
             )
             LOGGER.debug("Added to queue: %s", value)
         except Exception as e:

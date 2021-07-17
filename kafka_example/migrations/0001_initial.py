@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('timestamp', models.DateTimeField()),
-                ('value', models.CharField(default=kafka_example.models.random_value, max_length=64)),
+                ('value', models.CharField(default="", max_length=64)),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
             ],
         ),

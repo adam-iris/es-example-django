@@ -43,6 +43,7 @@
       {% for item in recent %}
         <li>
           <span class="value">{{ item.value }}</span>
+          <span class="data_id">{{ item.data_id }}</span>
           <span class="timestamp">{{ item.timestamp }}</span>
           <span class="delay">({{ item.delay_ms }}ms)</span>
         </li>

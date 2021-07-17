@@ -6,6 +6,13 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 
+def create_data_identifier():
+    """
+    Return some random value for a message
+    """
+    return "example:py/%s" % str(uuid.uuid1())
+
+
 class ProducerSingleton:
     """
     Create just one producer
@@ -31,11 +38,13 @@ def produce_example_message(value):
     producer = ProducerSingleton.singleton(topic)
 
     key = {
-        'key': str(uuid.uuid4()),
+        'key': str(uuid.uuid1()),
     }
     message = {
+        'data_id': create_data_identifier(),
         'timestamp': datetime.datetime.utcnow().isoformat(),
         'value': value,
     }
     producer.produce(key, message)
     producer.flush()
+    return message
