@@ -3,6 +3,7 @@ channels
 confluent-kafka[avro]
 Django>=3,<4
 django-crispy-forms
+django-prometheus
 gevent
 gunicorn
 psycopg2-binary

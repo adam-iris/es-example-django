@@ -166,3 +166,23 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+# Try to add prometheus monitoring (but only if running!)
+try:
+    import sys
+    if 'collectstatic' not in sys.argv:
+        import django_prometheus  # NOQA
+        INSTALLED_APPS += (
+            'django_prometheus',
+        )
+        MIDDLEWARE = [
+            'django_prometheus.middleware.PrometheusBeforeMiddleware',
+        ] + MIDDLEWARE + [
+            'django_prometheus.middleware.PrometheusAfterMiddleware',
+        ]
+        DATABASES['default']['ENGINE'] = 'django_prometheus.db.backends.postgresql'
+        # Under gunicorn, we actually have multiple processes, so each one needs its own port
+        PROMETHEUS_METRICS_EXPORT_PORT_RANGE = range(9000, 9004)
+except Exception as e:
+    print(e)
+    pass
