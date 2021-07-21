@@ -2,15 +2,10 @@ import kafka_interface as kafka
 import uuid
 import datetime
 import logging
+from es_lib.utils import get_instance_data, safe_json
+from kafka_example.models import ExampleValue
 
 LOGGER = logging.getLogger(__name__)
-
-
-def create_data_identifier():
-    """
-    Return some random value for a message
-    """
-    return "example:py/%s" % str(uuid.uuid1())
 
 
 class ProducerSingleton:
@@ -37,13 +32,20 @@ def produce_example_message(value):
     topic = 'example'
     producer = ProducerSingleton.singleton(topic)
 
+    model = ExampleValue(
+        value=value,
+        timestamp=datetime.datetime.utcnow(),
+    )
+    model.clean()
+    instance_data = get_instance_data(model)
+    LOGGER.info(safe_json(instance_data))
+    message = {
+        'data_id': model.data_id,
+        'timestamp': model.timestamp.isoformat(),
+        'value': model.value,
+    }
     key = {
         'key': str(uuid.uuid1()),
-    }
-    message = {
-        'data_id': create_data_identifier(),
-        'timestamp': datetime.datetime.utcnow().isoformat(),
-        'value': value,
     }
     producer.produce(key, message)
     producer.flush()

@@ -3,14 +3,12 @@ body {
 }
 
 .messages {
-    position: absolute;
-    right: 0;
+    float: right;
     padding: .1rem .3rem;
     background: #ffc;
-    width: 30rem;
+    max-width: 50%;
     font-size: 0.8rem;
     line-height: 1.3;
-    white-space: nowrap;    
 }
 
 .latest {

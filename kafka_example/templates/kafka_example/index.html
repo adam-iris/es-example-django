@@ -8,10 +8,22 @@
   </head>
   <body>
 
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
     <h1>Django Example</h1>
 
     <p>
-      Click the button to POST a message.
+      Click the button to POST a message. You can type a message or the server
+      will make up one for you.
     </p>
 
     <div class="d-flex">
@@ -21,20 +33,10 @@
             {{ form.value }}
           </div>
           <div class="col">
-            <button type="submit">Send a test message</button>
+            <button type="submit">Send</button>
           </div>
         </div>
       </form>
-
-      {% if messages %}
-      <div class="messages">
-          {% for message in messages %}
-          <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-              {{ message }}
-          </div>
-          {% endfor %}
-      </div>
-      {% endif %}
     </div>
 
     {% if recent %}

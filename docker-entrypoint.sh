@@ -1,11 +1,16 @@
 #!/bin/bash
 
 ###
-# Docker effectively runs "ENTRYPOINT CMD" so this script runs with a
-# command as its arguments. (Why? I don't know.)
-# So this script can run all the things that should precede the "main" command
+# Docker effectively runs 
+#  $ENTRYPOINT $CMD
+# so the command is passed as all the arguments
+# to this entrypoint. (Why? I don't know.)
+# Use this to run any prerequisites.
 
+# Django migrations
 python manage.py migrate;
+
+# We currently build static files into the image
 # python manage.py collectstatic --noinput;
 
 # Run the command

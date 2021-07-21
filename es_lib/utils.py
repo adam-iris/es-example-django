@@ -3,8 +3,6 @@
 General purpose utilities.
 """
 
-from __future__ import (absolute_import, division, print_function)
-
 import unicodedata
 import datetime
 import re
@@ -16,7 +14,6 @@ from django.conf import settings
 from functools import wraps
 from random import random
 from time import sleep
-import six
 
 LOGGER = getLogger(__name__)
 
@@ -78,7 +75,7 @@ def to_iso8601(t, with_time=True, separator='T', blank_value=''):
     @param blank_value: if blank date given, return a value (or throw if this is an Exception class)
     """
     # If given a string, try to parse it first
-    if isinstance(t, six.string_types):
+    if isinstance(t, (str, bytes)):
         t = parse_iso8601(t)
     # Handle blank value
     if not t:

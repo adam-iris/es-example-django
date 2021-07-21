@@ -1,33 +1,6 @@
 from django.db import models
-import uuid
 from datetime import timedelta
-import random
-
-
-def data_identifier():
-    """
-    Return some random value for a message
-    """
-    return "example:py/%s" % str(uuid.uuid1())
-
-
-def random_message():
-    """
-    Return some random message
-    """
-    PEOPLE = [
-        'Homer', 'Marge', 'Bart', 'Lisa', 'Maggie', 'Moe', 'Barney', 
-        'Carl', 'Lenny', 'Mr. Burns', 'Bumblebee Man', 'McBain',
-    ]
-    PLACES = [
-        '642 Evergreen Terrace', "Moe's Bar", 'Springfield Elementary',
-        'Springfield Nuclear Power Plant', 'Capital City',
-    ]
-    return "%s calls %s from %s" % (
-        random.choice(PEOPLE),
-        random.choice(PEOPLE),
-        random.choice(PLACES),
-    )
+from kafka_example.utils import create_data_identifier, random_message
 
 
 class ExampleValue(models.Model):
@@ -40,14 +13,14 @@ class ExampleValue(models.Model):
     )
     timestamp = models.DateTimeField()
     value = models.CharField(
-        max_length=64,
+        max_length=250,
         blank=True,
     )
     created_date = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
         if not self.data_id:
-            self.data_id = data_identifier()
+            self.data_id = create_data_identifier()
         if not self.value:
             self.value = random_message()
 

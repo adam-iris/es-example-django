@@ -40,7 +40,7 @@ class IndexView(FormView):
                 messages.SUCCESS,
                 "Added to queue: %s" % json.dumps(sent),
             )
-            LOGGER.debug("Added to queue: %s", value)
+            LOGGER.debug("Added to queue: %s", sent)
         except Exception as e:
             LOGGER.error(e, exc_info=True)
             messages.add_message(
