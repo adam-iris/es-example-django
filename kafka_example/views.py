@@ -17,7 +17,13 @@ class TestForm(forms.ModelForm):
     class Meta:
         model = ExampleValue
         fields = ['value']
-
+        widgets = {
+            'value': forms.TextInput(attrs={
+                'class': "form-control",
+                'placeholder': 'Optional message'
+            }),
+        }
+        
 
 class IndexView(FormView):
     """
