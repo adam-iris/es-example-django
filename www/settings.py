@@ -128,11 +128,7 @@ DATETIME_FORMAT = 'Y-m-d H:i:s'
 
 STATIC_URL = '/static/'
 
-# This is a hack!
-# We install /django and /django-static as siblings so that
-# the relative path between them is the same in both cases
-STATIC_ROOT = BASE_DIR / '..' / 'django-static'
-
+STATIC_ROOT = Path(os.getenv("STATIC_ROOT", "/web-static"))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
