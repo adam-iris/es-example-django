@@ -4,6 +4,7 @@ confluent-kafka[avro]
 Django>=3,<4
 django-crispy-forms
 django-prometheus
+django-vouch-proxy-auth
 gevent
 gunicorn
 psycopg2-binary

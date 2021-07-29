@@ -52,8 +52,14 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_vouch_proxy_auth.middleware.VouchProxyMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django_vouch_proxy_auth.backends.VouchProxyUserBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = 'www.urls'
@@ -109,6 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+VOUCH_PROXY_VALIDATE_ENDPOINT = 'http://vouch-proxy:9090/validate'
+VOUCH_PROXY_VERIFY_SSL = False
+VOUCH_PROXY_CREATE_UNKNOWN_USER = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

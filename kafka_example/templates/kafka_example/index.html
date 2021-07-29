@@ -7,6 +7,20 @@
   </head>
   <body>
 
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand">es-example-django</a>
+        <form class="d-flex">
+          <b>{{ user }}</b>
+          {% if user.is_authenticated %}
+            <a href="/logout?url=http://localhost:8080{{ request.path }}">Logout</a>
+          {% else %}
+            <a href="/login?url=http://localhost:8080{{ request.path }}">Login</a>
+          {% endif %}
+        </form>
+      </div>
+    </nav>    
+
     {% if messages %}
     <div class="messages">
         {% for message in messages %}
