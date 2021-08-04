@@ -17,7 +17,7 @@
         <a class="navbar-brand">es-example-django</a>
         <form class="d-flex">
           {% if user.is_authenticated %}
-            <b><a href="{% url 'user-home' %}">{{ user }}</a></b>
+            <b class="me-2"><a href="{% url 'user-home' %}">{{ user }}</a></b>
             <a href="{% url 'user-logout' %}">Logout</a>
           {% else %}
             <a href="{% url 'user-login' %}">Login</a>
@@ -27,8 +27,12 @@
     </nav>    
     {% endblock nav %}
 
-    {% block content %}
-    {% endblock content %}
+    {% block body %}
+    <div class="px-2 py-1">
+        {% block content %}
 
+        {% endblock content %}
+    </div>
+    {% endblock body %}
   </body>
 </html>
