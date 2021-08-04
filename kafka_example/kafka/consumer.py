@@ -2,6 +2,8 @@ import kafka_interface as kafka
 import logging
 from kafka_example.models import ExampleValue
 from es_common.utils import retry, RetryableError
+from es_common.data_id import create_data_id
+from django.conf import settings
 
 LOGGER = logging.getLogger(__name__)
 
@@ -27,7 +29,7 @@ class ExampleConsumer(object):
     """
     Just consumes from the topic
     """
-    topic = 'example'
+    topic = settings.KAFKA_EXAMPLE_TOPIC
 
     def consume(self, message):
         """

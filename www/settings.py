@@ -88,16 +88,25 @@ WSGI_APPLICATION = 'www.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'es-django'),
-        'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+# Use postgres if defined, otherwise fall back to safe
+if os.getenv('POSTGRES_DB'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB', ''),
+            'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+            'USER': os.getenv('POSTGRES_USER', 'es_django'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'es_django'),
+        },
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'es_django',
+        },
+    }
 
 
 # Password validation
@@ -182,7 +191,7 @@ LOGGING = {
 # Try to add prometheus monitoring (but only if running!)
 try:
     import sys
-    if 'collectstatic' not in sys.argv:
+    if sys.argv[1] not in ('collectstatic', 'test',):
         import django_prometheus  # NOQA
         INSTALLED_APPS += (
             'django_prometheus',
@@ -198,3 +207,7 @@ try:
 except Exception as e:
     print(e)
     pass
+
+
+# Example app config
+KAFKA_EXAMPLE_TOPIC = "test_provenance"

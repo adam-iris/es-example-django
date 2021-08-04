@@ -1,14 +1,13 @@
 import uuid
 import random
+from es_common.data_id import create_data_id
 
 
 def create_data_identifier(obj=None):
     """
     Generate a data identifier for something.
     """
-    # Hardcoded to this app
-    # example:[uid]
-    return "example:%s" % str(uuid.uuid1())
+    return create_data_id("example")
 
 
 def random_message():
