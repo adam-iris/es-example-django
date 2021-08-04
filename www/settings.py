@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'crispy_forms',
+    'es_user',
+    'es_common',
     'kafka_example',
 ]
 
@@ -91,6 +93,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'es-django'),
         'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
         'USER': os.getenv('POSTGRES_USER', 'postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
     }
@@ -118,6 +121,10 @@ AUTH_PASSWORD_VALIDATORS = [
 VOUCH_PROXY_VALIDATE_ENDPOINT = 'http://vouch-proxy:9090/validate'
 VOUCH_PROXY_VERIFY_SSL = False
 VOUCH_PROXY_CREATE_UNKNOWN_USER = False
+
+# Login/logout through the user app
+LOGIN_REDIRECT_URL = 'user-home'
+LOGIN_URL = 'user-login'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

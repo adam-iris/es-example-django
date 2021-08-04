@@ -1,7 +1,7 @@
 import kafka_interface as kafka
 import logging
 from kafka_example.models import ExampleValue
-from es_lib.utils import retry, RetryableError
+from es_common.utils import retry, RetryableError
 
 LOGGER = logging.getLogger(__name__)
 
