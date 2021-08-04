@@ -1,9 +1,15 @@
-from django.views.generic.base import RedirectView
-from django.views.generic import TemplateView
+import json
+from logging import getLogger
+
+from django.contrib.auth import logout
 from django.urls import reverse_lazy
+from django.utils.safestring import mark_safe
+from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
+
 from es_user.lib import get_jwt
 from es_user.models import UserJWT
-from logging import getLogger
+from es_common.utils import safe_json
 
 LOGGER = getLogger(__name__)
 
@@ -17,7 +23,13 @@ class UserView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["jwt"] = UserJWT.objects.filter(user=self.request.user).first()
+        user = self.request.user
+        if user.is_authenticated:
+            user_jwt = UserJWT.objects.filter(user=user).first()
+            if user_jwt:
+                context['jwt'] = safe_json(user_jwt.jwt, indent=1)
+            else:
+                context['jwt'] = "not saved"
         return context
 
 

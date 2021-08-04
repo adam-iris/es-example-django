@@ -8,6 +8,8 @@
 
   <h2>JWT</h2>
 
-    {{ jwt }}
+    {% if jwt %}
+      <pre>{{ jwt }}</pre>
+    {% endif %}
 
 {% endblock content %}

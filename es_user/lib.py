@@ -1,9 +1,11 @@
-import gzip
 import base64
+import gzip
+import json
+import logging
+
 import jwt
 import requests
-import logging
-import json
+from django.conf import settings
 
 LOGGER = logging.getLogger(__name__)
 
