@@ -1,0 +1,34 @@
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    {% block css %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'es_common/es-common.css' %}">
+    {% endblock css %}
+    {% block js %}
+    {% endblock js %}
+  </head>
+  <body>
+
+    {% block nav %}
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand">es-example-django</a>
+        <form class="d-flex">
+          {% if user.is_authenticated %}
+            <b><a href="{% url 'user-home' %}">{{ user }}</a></b>
+            <a href="{% url 'user-logout' %}">Logout</a>
+          {% else %}
+            <a href="{% url 'user-login' %}">Login</a>
+          {% endif %}
+        </form>
+      </div>
+    </nav>    
+    {% endblock nav %}
+
+    {% block content %}
+    {% endblock content %}
+
+  </body>
+</html>

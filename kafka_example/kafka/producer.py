@@ -2,7 +2,7 @@ import kafka_interface as kafka
 import uuid
 import datetime
 import logging
-from es_lib.utils import get_instance_data, safe_json
+from es_common.utils import get_instance_data, safe_json
 from kafka_example.models import ExampleValue
 
 LOGGER = logging.getLogger(__name__)

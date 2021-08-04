@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('example/', include('kafka_example.urls')),
+    path('user/', include('es_user.urls')),
 ]

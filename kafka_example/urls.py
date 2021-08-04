@@ -1,7 +1,7 @@
-from django.urls import path
 from kafka_example import views
+from django.urls import path
 
 
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='kafka-example'),
+    path('', views.IndexView.as_view(), name='example-home'),
 ]
