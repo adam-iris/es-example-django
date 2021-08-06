@@ -134,10 +134,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 VOUCH_PROXY_VALIDATE_ENDPOINT = 'http://vouch-proxy:9090/validate'
 VOUCH_PROXY_VERIFY_SSL = False
-VOUCH_PROXY_CREATE_UNKNOWN_USER = False
+VOUCH_PROXY_CREATE_UNKNOWN_USER = True
+# VOUCH_PROXY_CACHE_TIMEOUT = 3600
 
-# Login/logout through the user app
+# Redirect to user home after login by default
 LOGIN_REDIRECT_URL = 'user-home'
+# Django view name of the login page
 LOGIN_URL = 'user-login'
 
 # Internationalization

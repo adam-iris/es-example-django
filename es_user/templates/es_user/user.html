@@ -1,15 +1,40 @@
 {% extends 'es_common/base.html' %}
+{% load es_common_tags %}
+
+{% block css %}
+{{ block.super }}
+<style>
+pre {
+  white-space: break-word;
+}
+</style>
+{% endblock css %}
 
 {% block content %}
 
-  <h2>User</h2>
+  <h3>User</h3>
 
-    {{ user }}
+    {% if user.pk %}
+      {{ user }} (#{{ user.pk }})
+      {% if user_claims %}
+        <pre>{{ user_claims|as_json }}</pre>
+      {% else %}
+        (no claims)
+      {% endif %}
+    {% endif %}
 
-  <h2>JWT</h2>
+    <h3>User JWT</h3>
 
-    {% if jwt %}
-      <pre>{{ jwt }}</pre>
+    {% if user_jwt %}
+      <pre>{{ user_jwt|as_json }}</pre>
+    {% endif %}
+
+  <h3>Cookie JWT</h3>
+
+    {% if cookie_jwt.raw_value %}
+      {% if cookie_jwt.is_valid %}Ok{% else %}Invalid{% endif %}
+      <pre>{{ cookie_jwt.raw_value }}</pre>
+      <pre>{{ cookie_jwt.value|as_json }}</pre>
     {% endif %}
 
 {% endblock content %}
