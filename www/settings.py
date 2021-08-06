@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    'django',
+    'django-web',
+    'web',
 ]
 
 
@@ -88,16 +89,29 @@ WSGI_APPLICATION = 'www.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'es-django'),
-        'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+def yesno(val):
+    return val and str(val).lower()[0] in 'yt1'
+
+# Use postgres if defined, otherwise fall back to safe
+
+if yesno(os.getenv('DJANGO_POSTGRES')) and os.getenv('POSTGRES_DB'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB', 'postgres'),
+            'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+            'USER': os.getenv('POSTGRES_USER', 'es_django'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'es_django'),
+        },
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3',
+        },
+    }
 
 
 # Password validation
@@ -181,8 +195,7 @@ LOGGING = {
 
 # Try to add prometheus monitoring (but only if running!)
 try:
-    import sys
-    if 'collectstatic' not in sys.argv:
+    if yesno(os.getenv('DJANGO_PROMETHEUS')):
         import django_prometheus  # NOQA
         INSTALLED_APPS += (
             'django_prometheus',
