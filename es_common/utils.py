@@ -40,6 +40,13 @@ def safe_filename(filename):
     return re.sub(r'[^\w\d\.-]', '_', filename)
 
 
+def parse_boolean(s):
+    """
+    Parse a boolean from a string
+    """
+    return s and str(s).lower() not in ('no', 'false', '0')
+
+
 ISO_8601_RE = re.compile(r'\d+')
 
 

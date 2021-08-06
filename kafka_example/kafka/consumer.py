@@ -31,14 +31,23 @@ class ExampleConsumer(object):
     """
     topic = settings.KAFKA_EXAMPLE_TOPIC
 
+    def create_data_id(self):
+        """
+        Get a data id for one step
+        """
+        return create_data_id("archive.example", paths=(self.topic, __name__,))
+
     def consume(self, message):
         """
         Consume one message
         """
         LOGGER.info("Message: %s", message)
         value = message.get('value', {})
+        process_id = self.create_data_id()
         obj = ExampleValue(**value)
         obj.clean()
+        # Add ourselves to the data provenance
+        obj.data_provenance.append(process_id)
         obj.save()
 
     @retry(count=100, delay=2, backoff=2)

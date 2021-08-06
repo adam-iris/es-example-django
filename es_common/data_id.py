@@ -4,12 +4,21 @@ Example / testbed for Data Identifier usage
 import uuid
 
 
-def create_data_id(datatype, data=None):
+def create_data_id(datatype, paths=None, add_uuid=True):
     """
     Top-level interface for creating a data id
     """
-    # By default, we just have a UUID
-    return "http://earthscope.org/id/%s/%s" % (datatype, str(uuid.uuid1()))
+    # Need data or added uuid
+    fullpath = [
+        datatype,
+    ]
+    if paths:
+        fullpath.extend(list(paths))
+    if add_uuid:
+        fullpath.append(str(uuid.uuid1()))
+    if not fullpath:
+        raise Exception("No path created")
+    return "http://earthscope.org/%s/" % "/".join(fullpath)
 
 
 def join_provenances(provenance1, provenance2):
