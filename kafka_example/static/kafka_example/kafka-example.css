@@ -62,7 +62,7 @@ body {
 }
 
 .latest:hover {
-    border-color: #999;
+    /* border-color: #999; */
 }
 
 .latest:hover .details {

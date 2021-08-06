@@ -14,7 +14,7 @@ pre {
 
   <h2>User</h2>
 
-    {{ user }}
+    {{ user }} {% if user.pk %}({{ user.pk }}){% endif %}
 
   <h2>User JWT</h2>
 
