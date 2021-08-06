@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
 
-from es_user.lib import get_jwt
+from es_user.vouch_proxy import VouchProxyJWT
 from es_user.models import UserJWT
 from es_common.utils import safe_json
 
@@ -23,13 +23,21 @@ class UserView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # JWT from the user account
         user = self.request.user
         if user.is_authenticated:
             user_jwt = UserJWT.objects.filter(user=user).first()
             if user_jwt:
-                context['jwt'] = safe_json(user_jwt.jwt, indent=1)
+                context['user_jwt'] = user_jwt.jwt
             else:
-                context['jwt'] = "not saved"
+                context['user_jwt'] = "not saved"
+        # JWT from the request cookie
+        context['cookie_jwt'] = VouchProxyJWT(self.request)
+        try:
+            context['user_claims'] = UserJWT.get_all_user_claims(user)
+            LOGGER.info(context['user_claims'])
+        except Exception as e:
+            LOGGER.warning(e)
         return context
 
 
@@ -37,7 +45,6 @@ class LoginView(RedirectView):
     """
     Handle login
     """
-
     def get_redirect_url(self, *args, **kwargs):
         next_page = self.request.GET.get('next_page') or reverse_lazy('user-home')
         if self.request.user.is_authenticated:

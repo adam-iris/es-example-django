@@ -1,4 +1,10 @@
 {% extends 'es_common/base.html' %}
+{% load static %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'kafka_example/kafka-example.css' %}">
+{% endblock css %}
 
 {% block content %}
 
@@ -12,11 +18,18 @@
     </div>
   {% endif %}
 
-  <h1>Django Example</h1>
+  <img src="{% static 'kafka_example/django-roundtrip.png' %}" width="300px" align="right" />
+  
+  <h1>Kafka Roundtrip Demo</h1>
 
   <p>
-    Click the button to POST a message. You can type a message or the server
-    will make up one for you.
+    This is a simple app demonstrating the basic components of our architecture.
+
+    <ol>
+      <li>When you send a message it gets pushed onto a Kafka topic (data collection)</li>
+      <li>A listener on the topic saves it to a database (data archiving)</li>
+      <li>The web page outputs the database contents (data delivery)</li>
+    </ol>
   </p>
 
   <form class="message-form" method="post">{% csrf_token %}
@@ -27,23 +40,32 @@
   </form>
 
   {% if recent %}
-    <h3>Latest archived</h3>
-    <ul class="latest">
-      <li class="example">
-        <span class="value">Message</span>
-        <span class="badge data_id">data identifier</span>
-        <span class="timestamp">Time submitted</span>
-        <span class="delay">(delay to archive)</span>
-      </li>
-      {% for item in recent %}
-        <li>
-          <span class="value">{{ item.value }}</span>
-          <span class="badge data_id">{{ item.data_id }}</span>
-          <span class="timestamp">{{ item.timestamp }}</span>
-          <span class="delay">({{ item.delay_ms }}ms)</span>
-        </li>
-      {% endfor %}
-    </ul>
+    <hr/>
+    <h3>Latest Archived</h3>
+    {% for item in recent %}
+    <div class="card latest popup-help">
+      <div class="card-header">
+        <span class="value">{{ item.value }}</span>
+        <span class="timestamp">{{ item.timestamp }}</span>
+      </div>
+      <div class="popup card">
+        <ul class="list-compact">
+          <li><b>Data Id</b> {{ item.data_id }}</li>
+          <li><b>Started</b> {{ item.timestamp }}</li>
+          <li><b>Received</b> {{ item.created_date }}</li>
+          <li><b>Delay</b> {{ item.delay_ms }}ms</li>
+          <li><b>Value</b> {{ item.value }}</li>
+          <li><b>Provenance</b>
+            <ul class="provenance">
+              {% for prov in item.data_provenance %}
+                <li>{{ prov }}</li>
+              {% endfor %}
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
   {% endif %}
 
 {% endblock content %}

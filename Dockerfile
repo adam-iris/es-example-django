@@ -4,7 +4,7 @@ WORKDIR /es-example-django
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
-RUN python manage.py collectstatic --noinput
-COPY docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.sh
+# RUN POSTGRES_DB= python manage.py migrate -v 3
+COPY docker-*.sh /
+RUN chmod +x /docker-*.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -10,8 +10,8 @@
 # Django migrations
 python manage.py migrate;
 
-# We currently build static files into the image
-# python manage.py collectstatic --noinput;
+# Static files
+python manage.py collectstatic --noinput;
 
 # Run the command
 exec "$@";

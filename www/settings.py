@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    'django',
+    'django-web',
+    'web',
 ]
 
 
@@ -42,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'crispy_forms',
+    'compressor',
     'es_user',
     'es_common',
     'kafka_example',
@@ -88,16 +89,29 @@ WSGI_APPLICATION = 'www.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'es-django'),
-        'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+def yesno(val):
+    return val and str(val).lower()[0] in 'yt1'
+
+# Use postgres if defined, otherwise fall back to safe
+
+if yesno(os.getenv('DJANGO_POSTGRES')) and os.getenv('POSTGRES_DB'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB', 'postgres'),
+            'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+            'USER': os.getenv('POSTGRES_USER', 'es_django'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'es_django'),
+        },
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3',
+        },
+    }
 
 
 # Password validation
@@ -120,10 +134,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 VOUCH_PROXY_VALIDATE_ENDPOINT = 'http://vouch-proxy:9090/validate'
 VOUCH_PROXY_VERIFY_SSL = False
-VOUCH_PROXY_CREATE_UNKNOWN_USER = False
+VOUCH_PROXY_CREATE_UNKNOWN_USER = True
+# VOUCH_PROXY_CACHE_TIMEOUT = 3600
 
-# Login/logout through the user app
+# Redirect to user home after login by default
 LOGIN_REDIRECT_URL = 'user-home'
+# Django view name of the login page
 LOGIN_URL = 'user-login'
 
 # Internationalization
@@ -146,6 +162,12 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = Path(os.getenv("STATIC_ROOT", "/web-static"))
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -163,7 +185,7 @@ LOGGING = {
             'format': '%(levelname)s %(message)s',
         },
         'verbose': {
-            'format': '[%(asctime)s] %(levelname)s (%(name)s) %(message)s',
+            'format': '[%(asctime)s] level=%(levelname)s name=%(name)s %(message)s',
         },
     },
     'handlers': {
@@ -181,8 +203,7 @@ LOGGING = {
 
 # Try to add prometheus monitoring (but only if running!)
 try:
-    import sys
-    if 'collectstatic' not in sys.argv:
+    if yesno(os.getenv('DJANGO_PROMETHEUS')):
         import django_prometheus  # NOQA
         INSTALLED_APPS += (
             'django_prometheus',
@@ -198,3 +219,16 @@ try:
 except Exception as e:
     print(e)
     pass
+
+
+# Example app config
+KAFKA_EXAMPLE_TOPIC = "test_provenance"
+
+# CSS compilers
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
+# Open CORS headers
+CORS_ALLOW_ALL_ORIGINS = True
