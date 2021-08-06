@@ -33,6 +33,11 @@ class UserView(TemplateView):
                 context['user_jwt'] = "not saved"
         # JWT from the request cookie
         context['cookie_jwt'] = VouchProxyJWT(self.request)
+        try:
+            context['user_claims'] = UserJWT.get_all_user_claims(user)
+            LOGGER.info(context['user_claims'])
+        except Exception as e:
+            LOGGER.warning(e)
         return context
 
 
