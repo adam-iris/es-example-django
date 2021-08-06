@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'crispy_forms',
+    'compressor',
     'es_user',
     'es_common',
     'kafka_example',
@@ -160,6 +160,12 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = Path(os.getenv("STATIC_ROOT", "/web-static"))
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -177,7 +183,7 @@ LOGGING = {
             'format': '%(levelname)s %(message)s',
         },
         'verbose': {
-            'format': '[%(asctime)s] %(levelname)s (%(name)s) %(message)s',
+            'format': '[%(asctime)s] level=%(levelname)s name=%(name)s %(message)s',
         },
     },
     'handlers': {
@@ -211,3 +217,11 @@ try:
 except Exception as e:
     print(e)
     pass
+# CSS compilers
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
+# Open CORS headers
+CORS_ALLOW_ALL_ORIGINS = True
