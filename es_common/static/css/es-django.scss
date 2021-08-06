@@ -1,0 +1,28 @@
+body {
+    padding: 1em;
+}
+
+.popup-help {
+    display: inline;
+    position: relative;
+    cursor: pointer;
+
+    & > .popup {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        width: 50%;
+        min-width: 20rem;
+        z-index: 1;
+        font-size: .9rem;
+        pointer-events: none;  
+    }
+    &:hover > .popup {
+        display: block;
+    }
+}
+
+.text-dump {
+    
+}
