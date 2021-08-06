@@ -1,4 +1,14 @@
 {% extends 'es_common/base.html' %}
+{% load es_common_tags %}
+
+{% block css %}
+{{ block.super }}
+<style>
+pre {
+  white-space: break-word;
+}
+</style>
+{% endblock css %}
 
 {% block content %}
 
@@ -6,10 +16,18 @@
 
     {{ user }}
 
-  <h2>JWT</h2>
+  <h2>User JWT</h2>
 
-    {% if jwt %}
-      <pre>{{ jwt }}</pre>
+    {% if user_jwt %}
+      <pre>{{ user_jwt|as_json }}</pre>
+    {% endif %}
+
+  <h2>Cookie JWT</h2>
+
+    {% if cookie_jwt %}
+      {% if cookie_jwt.is_valid %}Ok{% else %}Invalid{% endif %}
+      <pre>{{ cookie_jwt.raw_value }}</pre>
+      <pre>{{ cookie_jwt.value|as_json }}</pre>
     {% endif %}
 
 {% endblock content %}
