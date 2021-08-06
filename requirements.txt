@@ -2,6 +2,7 @@ avro
 channels
 confluent-kafka[avro]
 Django>=3,<4
+django-appconf
 django-compressor
 django-crispy-forms
 django-libsass

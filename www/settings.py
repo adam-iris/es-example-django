@@ -217,6 +217,11 @@ try:
 except Exception as e:
     print(e)
     pass
+
+
+# Example app config
+KAFKA_EXAMPLE_TOPIC = "test_provenance"
+
 # CSS compilers
 
 COMPRESS_PRECOMPILERS = (
