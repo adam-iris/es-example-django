@@ -16,7 +16,7 @@ body {
     background: #eee;
     padding: 0 .5em;
 }
-.latest li > span + span {
+.latest span + span {
     margin-left: .5em;
 }
 .latest .value {
@@ -37,3 +37,34 @@ body {
     max-width: 40em;
 }
 
+.latest {
+    position: relative;
+}
+
+.latest .details {
+    display: none;
+	position: absolute;
+	left: 50%;
+	right: 0;
+    top: 1rem;
+    z-index: 1;
+    font-size: .9rem;
+    pointer-events: none;  
+}
+
+.details > ul {
+	list-style: none;
+	padding: 0;
+}
+
+.details > ul > li {
+	padding: .2rem 1rem;
+}
+
+.latest:hover {
+    border-color: #999;
+}
+
+.latest:hover .details {
+    display: block;
+}
