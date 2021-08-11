@@ -4,8 +4,8 @@ This is a vanilla Django project intended to be a testbed for components of the 
 
 # Applications
 
-[Kafka Example](kafka_example.md) implements an example "round-trip" data path through collection/archiving/distribution.
-[User](es_user.md) implements an example "round-trip" data path through collection/archiving/distribution.
+- [Kafka Example](kafka_example.md) implements an example "round-trip" data path through collection/archiving/distribution.
+- [User](es_user.md) implements an example "round-trip" data path through collection/archiving/distribution.
 
 ## Components
 
